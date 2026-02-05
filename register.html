@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: blue;
+            color: white;
+            text-align: right;
+            padding: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* CENTERING AREA */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;   /* horizontal center */
+            align-items: center;       /* vertical center */
+            background: #f2f2f2;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            width: 340px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: 2px solid black;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        footer {
+            background: blue;
+            color: white;
+            text-align: center;
+            padding: 6px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<h2>Create Account</h2>
+<form onsubmit="registerUser(event)">
+    <input type="username" id="USERNAME" placeholder="USERNAME" required><br><br>
+    <input type="password" id="regPassword" placeholder="Password" required><br><br>
+    <select id="role">
+        <option value="employee">Employee</option>
+        <option value="admin">Admin</option>
+    </select><br><br>
+    <button type="submit">Register</button>
+    <form id="registerForm">
+</form>
+<p>Already have an account? <a href="index.html">Login</a></p>
+<script src="register.js"></script>
+</body>
+</html>
