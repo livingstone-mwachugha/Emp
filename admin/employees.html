@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<h3 style="text-align:center; margin-top:20px;">
+    Create User Account
+</h3>
+
+<div style="
+    background:white;
+    width:360px;
+    margin:20px auto;
+    padding:20px;
+    border:1px solid #ccc;
+">
+
+    <input type="text" id="name" placeholder="Full Name"
+        style="width:100%; padding:8px; margin-bottom:10px;">
+
+    <input type="text" id="username" placeholder="Username"
+        style="width:100%; padding:8px; margin-bottom:10px;">
+
+    <input type="password" id="password" placeholder="Password"
+        style="width:100%; padding:8px; margin-bottom:10px;">
+
+    <select id="role" style="width:100%; padding:8px; margin-bottom:15px;">
+        <option value="">Select Role</option>
+        <option value="admin">Admin</option>
+        <option value="employee">Employee</option>
+    </select>
+
+    <button onclick="createUser()" style="
+        width:100%;
+        padding:10px;
+        background:blue;
+        color:white;
+        border:none;
+        cursor:pointer;
+    ">
+        Create Account
+    </button>
+
+    <p id="msg" style="color:green; margin-top:10px;"></p>
+
+</div>
+
+<script>
+function createUser() {
+
+    let name = document.getElementById("name").value.trim();
+    let username = document.getElementById("username").value.trim();
+    let password = document.getElementById("password").value;
+    let role = document.getElementById("role").value;
+
+    if (!name || !username || !password || !role) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // prevent duplicate username
+    if (users.some(u => u.username === username)) {
+        alert("Username already exists");
+        return;
+    }
+
+    users.push({
+        name: name,
+        username: username,
+        password: password,
+        role: role
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    document.getElementById("msg").innerText =
+        "User account created successfully";
+
+    document.getElementById("name").value = "";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("role").value = "";
+}
+</script>
+
+</body>
+</html>
+

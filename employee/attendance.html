@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attendance</title>
+</head>
+
+<body style="
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#eef6f0;
+">
+
+    <!-- HEADER -->
+    <h3 style="
+        background:green;
+        color:white;
+        text-align:center;
+        padding:15px;
+        margin:0;
+    ">
+        Attendance
+    </h3>
+
+    <!-- ATTENDANCE CARD -->
+    <div style="
+        background:white;
+        width:320px;
+        margin:30px auto;
+        padding:20px;
+        border:1px solid #ccc;
+        text-align:center;
+    ">
+
+        <button onclick="markAttendance()" style="
+            padding:10px 20px;
+            background:green;
+            color:white;
+            border:none;
+            cursor:pointer;
+        ">
+            Check In
+        </button>
+
+        <p id="message" style="color:gray; margin-top:10px;"></p>
+
+    </div>
+
+<script>
+function markAttendance() {
+
+    let today = new Date().toDateString();
+    let time = new Date().toLocaleTimeString();
+
+    let attendance = JSON.parse(localStorage.getItem("attendance")) || [];
+
+    // Prevent double check-in same day
+    let alreadyMarked = attendance.some(a => a.date === today);
+
+    if (alreadyMarked) {
+        document.getElementById("message").innerText =
+            "Attendance already marked for today.";
+        return;
+    }
+
+    attendance.push({
+        date: today,
+        time: time
+    });
+
+    localStorage.setItem("attendance", JSON.stringify(attendance));
+
+    document.getElementById("message").innerText =
+        "Attendance marked successfully.";
+}
+</script>
+
+</body>
+</html>

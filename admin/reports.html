@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Tasks</title>
+    <link rel="stylesheet" href="admin.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 500px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h3>Assign Tasks</h3>
+
+<div class="container">
+
+    <input type="text" id="taskName" placeholder="Task Name">
+
+    <select id="employee">
+        <option value="">Select Employee</option>
+    </select>
+
+    <button onclick="assignTask()">Assign Task</button>
+
+    <ul id="tasks"></ul>
+
+</div>
+
+<script>
+let users = JSON.parse(localStorage.getItem("users")) || [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let empSelect = document.getElementById("employee");
+let taskList = document.getElementById("tasks");
+
+// load employees only
+users.filter(u => u.role === "employee").forEach(u => {
+    let opt = document.createElement("option");
+    opt.value = u.username;
+    opt.textContent = u.name;
+    empSelect.appendChild(opt);
+});
+
+// show existing tasks
+tasks.forEach(t => {
+    addTaskToList(t);
+});
+
+function assignTask() {
+    let taskName = document.getElementById("taskName").value.trim();
+    let employee = empSelect.value;
+
+    if (!taskName || !employee) {
+        alert("Please enter task and select employee");
+        return;
+    }
+
+    let task = {
+        task: taskName,
+        employee: employee,
+        status: "Assigned"
+    };
+
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    addTaskToList(task);
+
+    document.getElementById("taskName").value = "";
+    empSelect.value = "";
+}
+
+function addTaskToList(task) {
+    taskList.innerHTML += `
+        <li>
+            <strong>${task.task}</strong> → ${task.employee}
+            (${task.status})
+        </li>
+    `;
+}
+</script>
+
+</body>
+</html>

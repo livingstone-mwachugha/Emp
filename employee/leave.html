@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave</title>
+</head>
+
+<body style="font-family:Arial; background:#eef6f0; margin:0;">
+
+<h3 style="background:green; color:white; text-align:center; padding:15px; margin:0;">
+    Apply for Leave
+</h3>
+
+<div style="background:white; width:300px; margin:40px auto; padding:20px; border:1px solid #ccc;">
+
+    <label>Start Date</label>
+    <input type="date" id="start" style="width:100%; margin-bottom:10px;">
+
+    <label>End Date</label>
+    <input type="date" id="end" style="width:100%; margin-bottom:15px;">
+
+    <button onclick="applyLeave()" style="
+        width:100%;
+        padding:10px;
+        background:green;
+        color:white;
+        border:none;
+        cursor:pointer;
+    ">
+        Submit Leave
+    </button>
+</div>
+
+<script>
+function applyLeave() {
+
+    let start = document.getElementById("start").value;
+    let end = document.getElementById("end").value;
+
+    if (!start || !end) {
+        alert("Please select both dates");
+        return;
+    }
+
+    let startDate = new Date(start);
+    let endDate = new Date(end);
+
+    if (endDate < startDate) {
+        alert("End date cannot be before start date");
+        return;
+    }
+
+    // Calculate days requested
+    let daysRequested = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+
+    let MAX_LEAVE_DAYS = 21;
+
+    if (daysRequested > MAX_LEAVE_DAYS) {
+        alert("You are not qualified. Maximum leave is 21 days.");
+        return;
+    }
+
+    let leaves = JSON.parse(localStorage.getItem("leaves")) || [];
+
+    leaves.push({
+        start: start,
+        end: end,
+        days: daysRequested,
+        status: "Pending"
+    });
+
+    localStorage.setItem("leaves", JSON.stringify(leaves));
+
+    alert("Leave submitted for approval (" + daysRequested + " days)");
+
+}
+</script>
+
+</body>
+</html>
+

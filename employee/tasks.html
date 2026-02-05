@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        h3 {
+            text-align: center;
+            padding: 15px;
+            background: #1e3a8a;
+            color: white;
+            margin: 0;
+        }
+
+        .container {
+            width: 500px;
+            margin: 25px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .task {
+            padding: 12px;
+            border-left: 5px solid #2563eb;
+            background: #f9fafb;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .task strong {
+            color: #1e3a8a;
+        }
+
+        .status {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .completed {
+            color: green;
+            font-weight: bold;
+        }
+
+        button {
+            margin-top: 8px;
+            padding: 7px 14px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #15803d;
+        }
+
+        .no-task {
+            text-align: center;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+<h3>My Tasks</h3>
+
+<div class="container" id="taskList"></div>
+
+<script>
+    // Logged-in employee (example)
+    let currentUser = JSON.parse(localStorage.getItem("currentUser")) 
+        || { username: "employee" };
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    let list = document.getElementById("taskList");
+
+    let myTasks = tasks.filter(t => t.employee === currentUser.username);
+
+    if (myTasks.length === 0) {
+        list.innerHTML = "<p class='no-task'>No tasks assigned.</p>";
+    } else {
+        myTasks.forEach(task => {
+            let div = document.createElement("div");
+            div.className = "task";
+
+            if (task.status === "Completed") {
+                div.innerHTML = `
+                    <strong>${task.task}</strong>
+                    <div class="status completed">Completed</div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <strong>${task.task}</strong>
+                    <div class="status">Status: ${task.status}</div>
+                    <button onclick="completeTask('${task.task}')">
+                        Mark Completed
+                    </button>
+                `;
+            }
+
+            list.appendChild(div);
+        });
+    }
+
+    function completeTask(taskName) {
+        tasks.forEach(t => {
+            if (t.task === taskName && t.employee === currentUser.username) {
+                t.status = "Completed";
+            }
+        });
+
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        location.reload();
+    }
+</script>
+
+</body>
+</html>
